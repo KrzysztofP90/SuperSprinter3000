@@ -1,11 +1,32 @@
 function readDataFromDataBaseFile() {
-   var fs = require('fs');
    var jsonStringArray = fs.readFileSync('DataBase/db.txt').toString().split("$");
    var objectsArray = [];
    for (let i = 0; i < jsonStringArray.length; i++) {
       objectsArray.push(JSON.parse(jsonStringArray[i]));
    }
+   id = objectsArray.length;
    return objectsArray;
+}
+
+function Story(title,userStory,criteria,value,estimation) {
+   this.id = id;
+   this.title = title;
+   this.story = userStory;
+   this.criteria = criteria;
+   this.value = value;
+   this.estimation = estimation;
+   this.status = "In progress";
+   
+}
+
+function saveNewRecordToDataBaseFile(title,userStory,criteria,value,estimation) {
+   id ++;
+   var newStory = new Story(title,userStory,criteria,value,estimation);
+   var newStoryJson = "$" + JSON.stringify(newStory);
+   fs.appendFile('DataBase/db.txt', newStoryJson, function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
 }
 
 
@@ -41,7 +62,8 @@ app.get('/add', function(req, res) {
 
 
 app.post('/added', function(req, res) {
-   console.log(req.body.userStory);
+   saveNewRecordToDataBaseFile(req.body.storyTitle, req.body.userStory, req.body.criteria, 
+      req.body.value,req.body.estimation);
    res.render('added');
 })
 
@@ -51,4 +73,7 @@ var server = app.listen(8000, function () {
    
    console.log("Start listening at http://%s:%s", host, port)
 });
+
+var id = 0;
+const fs = require('fs');
 
