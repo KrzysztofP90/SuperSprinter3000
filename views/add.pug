@@ -1,0 +1,18 @@
+html
+    head
+        link(rel='stylesheet', href='styles/styles.css', type='text/css')
+        title  Super Sprinter 3000
+    body
+        h1 Add new User Story:
+    form(id="addForm" method="post" action="/added")
+        p Story title:
+        input(name="storyTitle")
+        p User Story:
+        textarea(name="userStory" cols="30", rows="10")
+        p Acceptance criteria:
+        textarea(name="criteria" cols="30", rows="10")
+        p Business value:
+        input(name="value")
+        p Estimation:
+        input(name="estimation")
+        button(type="submit" id="addStory") Add User Story!

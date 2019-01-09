@@ -61,3 +61,26 @@ button.edit:hover, button.remove:hover {
     cursor: pointer;
 }
 
+p {
+    color: aliceblue;
+}
+
+form#addForm {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20%;
+    width: 50%;
+}
+
+button#addStory {
+    width: 20%;
+    margin-top: 5%;
+    height: 10%;
+    margin-left: 40%;
+}
+
+button#addStory:hover {
+    cursor: pointer;
+    
+}
+
