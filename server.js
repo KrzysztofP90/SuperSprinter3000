@@ -1,3 +1,8 @@
+function readDataFromCSV() {
+
+}
+
+
 var express = require('express');
 var app = express();
 
@@ -11,7 +16,7 @@ app.set('view engine', 'pug');
 
 
 app.get('/', function (req, res) {
-   res.render('index', {title:'Super Sprinter 3000', message:'Welcome to Super Sprinter 3000!'})
+   res.render('index');
 })
 
 var server = app.listen(8000, function () {

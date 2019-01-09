@@ -1,3 +1,26 @@
 h1 {
-    color: blue;
+    color: aliceblue;
+    padding-left: 30%;
+    padding-top: 3%;
+}
+body {
+    background-image: url(../images/car.jpg);
+    background-size: cover;
+}
+
+button#add {
+    margin-left: 10%;
+    margin-top: 5%;
+    width: 10%;
+    height: 15%;
+}
+
+th.longRecord {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 3%;
+}
+
+th {
+    padding: 3%;
 }
