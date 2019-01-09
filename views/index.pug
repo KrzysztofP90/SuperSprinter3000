@@ -14,6 +14,21 @@ html
         th Business value
         th Estimation
         th Status
+    
+      each obj in arrayOfRecordsToTable 
+        tr
+          td=obj.id
+          td=obj.title
+          td(class="longRecord")=obj.story
+          td(class="longRecord")=obj.criteria
+          td=obj.value
+          td=obj.estimation
+          td=obj.status
+          td
+            button(id=obj.id, class="edit")
+            button(id=obj.id, class="remove")
+
+
       
 
 

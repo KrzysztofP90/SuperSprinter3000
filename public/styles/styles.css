@@ -21,6 +21,22 @@ th.longRecord {
     padding-bottom: 3%;
 }
 
-th {
+th,td {
     padding: 3%;
+    color: azure;
+    background: black;
+    opacity: 0.7;
 }
+
+td.longRecord {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 3%;
+}
+
+button.edit, button.remove {
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+}
+

@@ -1,5 +1,24 @@
-function readDataFromCSV() {
+function readDataFromDataBaseFile() {
+   var fs = require('fs');
+   // var csv = require("fast-csv");
+   // var stream = fs.createReadStream("DataBase/db.csv");
+   
+   // var csvStream = csv()
+   // .on("data", function(data){
+   //      console.log(data);
+   // })
+   // .on("end", function(){
+   //      console.log("done");
+   // });
+   // content = stream.pipe(csvStream);
+   // console.log(content + " dsadasfasfas");
 
+   var jsonStringArray = fs.readFileSync('DataBase/db.txt').toString().split("$");
+   var objectsArray = [];
+   for (let i = 0; i < jsonStringArray.length; i++) {
+      objectsArray.push(JSON.parse(jsonStringArray[i]));
+   }
+   return objectsArray;
 }
 
 
@@ -16,7 +35,8 @@ app.set('view engine', 'pug');
 
 
 app.get('/', function (req, res) {
-   res.render('index');
+   var arrayOfRecordsToTable = readDataFromDataBaseFile();
+   res.render('index', {arrayOfRecordsToTable});
 })
 
 var server = app.listen(8000, function () {
@@ -25,3 +45,4 @@ var server = app.listen(8000, function () {
    
    console.log("Start listening at http://%s:%s", host, port)
 })
+
