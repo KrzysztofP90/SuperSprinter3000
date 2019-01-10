@@ -15,8 +15,7 @@ function Story(title,userStory,criteria,value,estimation) {
    this.criteria = criteria;
    this.value = value;
    this.estimation = estimation;
-   this.status = "In progress";
-   
+   this.status = "planning";
 }
 
 function saveNewRecordToDataBaseFile(title,userStory,criteria,value,estimation) {
@@ -30,8 +29,20 @@ function saveNewRecordToDataBaseFile(title,userStory,criteria,value,estimation) 
 }
 
 
+function parseCookieToEdit(cookie) {
+   var numberOfStoryToedit = cookie.split(':')[1];
+   var length = numberOfStoryToedit.length;
+   numberOfStoryToedit = numberOfStoryToedit.substring(1, length-2);
+   return numberOfStoryToedit;
+}
+
+
 var express = require('express');
 var app = express();
+
+var cookies = require('cookies');
+const cookieParser=require("cookie-parser");
+app.use(cookieParser());
 
 
 var bodyParser = require('body-parser');
@@ -51,9 +62,22 @@ app.set('view engine', 'pug');
 
 
 app.get('/', function (req, res) {
-   var arrayOfRecordsToTable = readDataFromDataBaseFile();
-   res.render('index', {arrayOfRecordsToTable});
+
+   var cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
+
+   if (cookie == '{}') {
+      console.log('Cookies: ', req.cookies);
+     
+      var arrayOfRecordsToTable = readDataFromDataBaseFile();
+      res.render('index', {arrayOfRecordsToTable});
+   }
+   else {
+      console.log('Cookies: ', req.cookies);
+      res.redirect('/edit');
+   }
 });
+
+
 
 
 app.get('/add', function(req, res) {
@@ -67,6 +91,21 @@ app.post('/added', function(req, res) {
    res.render('added');
 })
 
+app.get('/edit', function(req, res) {
+
+   res.render('edit');
+})
+
+
+app.post('/edited', function(req, res) {
+   var cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
+   var numberOfStoryToEdit = parseCookieToEdit(cookie);
+   res.clearCookie("toEdit");
+   res.render('edited');
+
+})
+
+
 var server = app.listen(8000, function () {
    var host = server.address().address;
    var port = server.address().port;
@@ -74,6 +113,10 @@ var server = app.listen(8000, function () {
    console.log("Start listening at http://%s:%s", host, port)
 });
 
+
+
 var id = 0;
 const fs = require('fs');
+
+
 

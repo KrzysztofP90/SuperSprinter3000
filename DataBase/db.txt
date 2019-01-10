@@ -1,4 +1,4 @@
 {"id":"1","title":"Test Story","story":"aaa dfssd fsdfsd fdsfwef,fwfwf,fwfw","criteria":"aaaaaa",
 "value":"1000","estimation":"4 h","status":"in progress"}$
 {"id":"2","title":"Story 2","story":"ddddd", "criteria":"ddddd",
- "value":"500", "estimation":"2 h", "status":"done"}${"id":3,"title":"test 3","story":"as user i want to add everything what i would like to add!","criteria":"EVERYTHING MUST BE DONE!","value":"9000","estimation":"1h","status":"In progress"}
+ "value":"500", "estimation":"2 h", "status":"done"}${"id":3,"title":"testwo","story":"As user i would like to see profile and requirments","criteria":"All must be done","value":"1000","estimation":"1h","status":"planning"}

@@ -1,7 +1,9 @@
 html
   head
+    script(src='../js/editHandler.js')
     title  Super Sprinter 3000
     link(rel='stylesheet', href='styles/styles.css', type='text/css')
+    
   body
     h1 Welcome to Super Sprinter 3000! 
     form
@@ -26,11 +28,8 @@ html
           td=obj.estimation
           td=obj.status
           td
-            button(id=obj.id, class="edit")
-            button(id=obj.id, class="remove")
-
-
-      
-
-
-
+            form
+              button(id=obj.id, class="edit" onclick="editUserStory(id)")
+            form
+              button(id=obj.id, class="remove")
+            
