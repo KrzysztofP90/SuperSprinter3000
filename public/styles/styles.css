@@ -21,6 +21,10 @@ button#add:hover {
     opacity: 1.0;
 }
 
+table {
+    width: 100%;
+}
+
 th.longRecord {
     padding-left: 10%;
     padding-right: 10%;

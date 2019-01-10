@@ -1,4 +1,1 @@
-{"id":"1","title":"Test Story","story":"aaa dfssd fsdfsd fdsfwef,fwfwf,fwfw","criteria":"aaaaaa",
-"value":"1000","estimation":"4 h","status":"in progress"}$
-{"id":"2","title":"Story 2","story":"ddddd", "criteria":"ddddd",
- "value":"500", "estimation":"2 h", "status":"done"}${"id":3,"title":"testwo","story":"As user i would like to see profile and requirments","criteria":"All must be done","value":"1000","estimation":"1h","status":"planning"}
+{"id":"1","title":"first","story":"as user i want to do dinner according this app","criteria":"mexican kitchen","value":"400","estimation":"5h","status":"todo"}${"id":"2","title":"seconde","story":"do something","criteria":"as you want","value":"300","estimation":"2h","status":"todo"}${"id":3,"title":"trzeciea","story":"czcfas","criteria":"dasdfa","value":"dsdafas","estimation":"asffas","status":"planning"}${"id":4,"title":"czwarta ","story":"as user i would like to see everyone and everything","criteria":"all must be done","value":"4000","estimation":"3h","status":"planning"}
