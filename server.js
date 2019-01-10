@@ -8,7 +8,7 @@ function readDataFromDataBaseFile() {
    return objectsArray;
 }
 
-
+/// user story object constructor
 function Story(parameters) {
    this.id = parameters.get("id");
    this.title = parameters.get("title");
@@ -93,14 +93,17 @@ function saveNewJsonToDataBaseFile(newJson) {
 }
 
 
+/// prepare express
 var express = require('express');
 var app = express();
 
+
+/// prepare cookie handling
 var cookies = require('cookies');
 const cookieParser=require("cookie-parser");
 app.use(cookieParser());
 
-
+/// prepare body parser
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
    extended: true
@@ -108,14 +111,22 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-
+// prepare static files handling
 app.use(express.static(__dirname + '/public'));
 app.use(express.static('/styles'));
 
+
+//prepare templates
 app.set('views', './views');
 app.set('view engine', 'pug');
 
 
+// support variables
+var countOfUserStory = 0;
+const fs = require('fs');
+
+
+/// set main route
 
 app.get('/', function (req, res) {
 
@@ -134,7 +145,7 @@ app.get('/', function (req, res) {
 });
 
 
-
+/// set add and added routes
 
 app.get('/add', function(req, res) {
    res.render('add');
@@ -147,9 +158,16 @@ app.post('/added', function(req, res) {
    res.render('added');
 })
 
-app.get('/edit', function(req, res) {
 
-   res.render('edit');
+/// set edit and edited routes
+
+app.get('/edit', function(req, res) {
+   var cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
+   var numberOfStoryToEdit = parseCookieToEdit(cookie);
+   var storyArray = readDataFromDataBaseFile();
+   editingStoryObject = storyArray[numberOfStoryToEdit-1];
+
+   res.render('edit', {editingStoryObject});
 })
 
 
@@ -164,17 +182,12 @@ app.post('/edited', function(req, res) {
 })
 
 
+
+/// start server
+
 var server = app.listen(8000, function () {
    var host = server.address().address;
    var port = server.address().port;
    
    console.log("Start listening at http://%s:%s", host, port)
 });
-
-
-
-var countOfUserStory = 0;
-const fs = require('fs');
-
-
-

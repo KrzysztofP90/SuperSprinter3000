@@ -6,15 +6,15 @@ html
         h1 Edit User Story:
     form(id="addForm" method="post" action="/edited")
         p Story title:
-        input(name="storyTitle")
+        input(name="storyTitle" type=text value=editingStoryObject.title required)
         p User Story:
-        textarea(name="userStory" cols="30", rows="10" placeholder="Describe yourself here...")
+        textarea(name="userStory" cols="30", rows="10" type=text placeholder=editingStoryObject.story required)
         p Acceptance criteria:
-        textarea(name="criteria" cols="30", rows="10")
+        textarea(name="criteria" cols="30", rows="10" type=text placeholder=editingStoryObject.criteria required)
         p Business value:
-        input(name="value")
+        input(name="value" type=number value=editingStoryObject.value min=100 max=1500)
         p Estimation:
-        input(name="estimation")
+        input(name="estimation" type=number value=editingStoryObject.estimation min=0.5 max=40)
         select(name="status")
             option(value="planning") planning
             option(value="todo") todo

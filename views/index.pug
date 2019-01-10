@@ -1,6 +1,6 @@
 html
   head
-    script(src='../js/editHandler.js')
+    script(src='../js/cookieHelper.js')
     title  Super Sprinter 3000
     link(rel='stylesheet', href='styles/styles.css', type='text/css')
     
@@ -29,7 +29,6 @@ html
           td=obj.status
           td
             form
-              button(id=obj.id, class="edit" onclick="editUserStory(id)")
-            form
-              button(id=obj.id, class="remove")
+              button(id=obj.id, class="edit" onclick="editUserStoryCookieHelper(id)")
+            
             

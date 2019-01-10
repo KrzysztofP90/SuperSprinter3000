@@ -6,13 +6,13 @@ html
         h1 Add new User Story:
     form(id="addForm" method="post" action="/added")
         p Story title:
-        input(name="storyTitle")
+        input(name="storyTitle" type=text required)
         p User Story:
-        textarea(name="userStory" cols="30", rows="10")
+        textarea(name="userStory" cols="30", rows="10" required)
         p Acceptance criteria:
-        textarea(name="criteria" cols="30", rows="10")
+        textarea(name="criteria" cols="30", rows="10" required)
         p Business value:
-        input(name="value")
+        input(name="value" type=number min=100 max=1500)
         p Estimation:
-        input(name="estimation")
+        input(name="estimation" type=number min=0.5 max=40)
         button(type="submit" id="addStory") Add User Story!
