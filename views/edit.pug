@@ -8,9 +8,9 @@ html
         p Story title:
         input(name="storyTitle" type=text value=editingStoryObject.title required)
         p User Story:
-        textarea(name="userStory" cols="30", rows="10" type=text placeholder=editingStoryObject.story required)
+        textarea(name="userStory" cols="30", rows="10" type=text  required)=editingStoryObject.story
         p Acceptance criteria:
-        textarea(name="criteria" cols="30", rows="10" type=text placeholder=editingStoryObject.criteria required)
+        textarea(name="criteria" cols="30", rows="10"  required)=editingStoryObject.criteria
         p Business value:
         input(name="value" type=number value=editingStoryObject.value min=100 max=1500)
         p Estimation:

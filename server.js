@@ -1,6 +1,9 @@
+
+
+
 function readDataFromDataBaseFile() {
-   var jsonStringArray = fs.readFileSync('DataBase/db.txt').toString().split("$");
-   var objectsArray = [];
+   const jsonStringArray = fs.readFileSync('DataBase/db.txt').toString().split("$");
+   const objectsArray = [];
    for (let i = 0; i < jsonStringArray.length; i++) {
       objectsArray.push(JSON.parse(jsonStringArray[i]));
    }
@@ -8,23 +11,14 @@ function readDataFromDataBaseFile() {
    return objectsArray;
 }
 
-/// user story object constructor
-function Story(parameters) {
-   this.id = parameters.get("id");
-   this.title = parameters.get("title");
-   this.story = parameters.get("story");
-   this.criteria = parameters.get("criteria");
-   this.value = parameters.get("value");
-   this.estimation = parameters.get("estimation");
-   this.status = parameters.get("status");
-}
 
 
 function saveNewRecordToDataBaseFile(title,userStory,criteria,value,estimation) {
    countOfUserStory ++;
-   var parametersMap = createParametersMapForNewUserStory(title,userStory,criteria,value,estimation);
-   var newStory = new Story(parametersMap);
-   var newStoryJson = "$" + JSON.stringify(newStory);
+   const parametersMap = createParametersMapForNewUserStory(title,userStory,criteria,value,estimation);
+   const newStory = new Story(parametersMap);
+   const newStoryJson = "$" + JSON.stringify(newStory);
+   //const newStoryJson = `$${JSON.stringify(newStory)}`;
    fs.appendFile('DataBase/db.txt', newStoryJson, function (err) {
       if (err) throw err;
       console.log('Saved!');
@@ -33,7 +27,7 @@ function saveNewRecordToDataBaseFile(title,userStory,criteria,value,estimation) 
 
 
 function createParametersMapForNewUserStory(title,userStory,criteria,value,estimation) {
-   var map = createParametersMapWithoutIdAndStatus(title,userStory,criteria,value,estimation);
+   const map = createParametersMapWithoutIdAndStatus(title,userStory,criteria,value,estimation);
    map.set("id", countOfUserStory);
    map.set("status", "planning");
    return map;
@@ -41,7 +35,7 @@ function createParametersMapForNewUserStory(title,userStory,criteria,value,estim
 
 
 function createParametersMapWithoutIdAndStatus(title,userStory,criteria,value,estimation) {
-   var map = new Map();
+   const map = new Map();
    map.set("title", title);
    map.set("story", userStory);
    map.set("criteria", criteria);
@@ -51,7 +45,7 @@ function createParametersMapWithoutIdAndStatus(title,userStory,criteria,value,es
 }
 
 function createParametersMapForEditedUserStory(id, title, story, criteria, value, estimation, status) {
-   var map = createParametersMapWithoutIdAndStatus(title, story, criteria, value, estimation);
+   const map = createParametersMapWithoutIdAndStatus(title, story, criteria, value, estimation);
    map.set("id", id);
    map.set("status", status);
    return map;
@@ -59,22 +53,22 @@ function createParametersMapForEditedUserStory(id, title, story, criteria, value
 
 
 function parseCookieToEdit(cookie) {
-   var numberOfStoryToedit = cookie.split(':')[1];
-   var length = numberOfStoryToedit.length;
+   let numberOfStoryToedit = cookie.split(':')[1];
+   const length = numberOfStoryToedit.length;
    numberOfStoryToedit = numberOfStoryToedit.substring(1, length-2);
    return numberOfStoryToedit;
 }
 
 
 function editUserStory(id, title, story, criteria, value, estimation, status) {
-   var storyArray = readDataFromDataBaseFile();
+   const storyArray = readDataFromDataBaseFile();
 
-   var parametersMap = createParametersMapForEditedUserStory(id, title, story, criteria,
+   const parametersMap = createParametersMapForEditedUserStory(id, title, story, criteria,
        value, estimation, status);
 
-   var editedStory = new Story(parametersMap);
+   const editedStory = new Story(parametersMap);
    storyArray[id-1] = editedStory;
-   var newJsonDataBase = "";
+   let newJsonDataBase = "";
    for (let i = 0; i < storyArray.length; i++) {
       newJsonDataBase += JSON.stringify(storyArray[i]);
       if (i < storyArray.length - 1) {
@@ -94,17 +88,21 @@ function saveNewJsonToDataBaseFile(newJson) {
 
 
 /// prepare express
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
+
+
+/// import model
+const Story = require('./model/story');
 
 
 /// prepare cookie handling
-var cookies = require('cookies');
+const cookies = require('cookies');
 const cookieParser=require("cookie-parser");
 app.use(cookieParser());
 
 /// prepare body parser
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
    extended: true
 }));
@@ -122,7 +120,7 @@ app.set('view engine', 'pug');
 
 
 // support variables
-var countOfUserStory = 0;
+let countOfUserStory = 0;
 const fs = require('fs');
 
 
@@ -130,12 +128,12 @@ const fs = require('fs');
 
 app.get('/', function (req, res) {
 
-   var cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
+   const cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
 
    if (cookie == '{}') {
       console.log('Cookies: ', req.cookies);
      
-      var arrayOfRecordsToTable = readDataFromDataBaseFile();
+      const arrayOfRecordsToTable = readDataFromDataBaseFile();
       res.render('index', {arrayOfRecordsToTable});
    }
    else {
@@ -162,9 +160,9 @@ app.post('/added', function(req, res) {
 /// set edit and edited routes
 
 app.get('/edit', function(req, res) {
-   var cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
-   var numberOfStoryToEdit = parseCookieToEdit(cookie);
-   var storyArray = readDataFromDataBaseFile();
+   const cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
+   const numberOfStoryToEdit = parseCookieToEdit(cookie);
+   const storyArray = readDataFromDataBaseFile();
    editingStoryObject = storyArray[numberOfStoryToEdit-1];
 
    res.render('edit', {editingStoryObject});
@@ -172,8 +170,8 @@ app.get('/edit', function(req, res) {
 
 
 app.post('/edited', function(req, res) {
-   var cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
-   var numberOfStoryToEdit = parseCookieToEdit(cookie);
+   const cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
+   const numberOfStoryToEdit = parseCookieToEdit(cookie);
    res.clearCookie("toEdit");
    editUserStory(numberOfStoryToEdit, req.body.storyTitle, req.body.userStory, req.body.criteria, 
       req.body.value,req.body.estimation, req.body.status);
@@ -185,9 +183,9 @@ app.post('/edited', function(req, res) {
 
 /// start server
 
-var server = app.listen(8000, function () {
-   var host = server.address().address;
-   var port = server.address().port;
+const server = app.listen(8000, function () {
+   const host = server.address().address;
+   const port = server.address().port;
    
    console.log("Start listening at http://%s:%s", host, port)
 });
