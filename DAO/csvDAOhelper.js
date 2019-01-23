@@ -25,6 +25,16 @@ function createParametersMapForNewUserStory(title,userStory,criteria,value,estim
     return map;
  }
 
+ 
+ function saveNewJsonToDataBaseFile(newJson) {
+       fs.writeFile('DataBase/db.txt', newJson, function (err) {
+          if (err) throw err;
+          console.log('Saved!');
+        });
+    }
 
 
+const fs = require('fs');
  module.exports.createParametersMapForNewUserStory = createParametersMapForNewUserStory;
+ module.exports.createParametersMapForEditedUserStory = createParametersMapForEditedUserStory;
+ module.exports.saveNewJsonToDataBaseFile = saveNewJsonToDataBaseFile;

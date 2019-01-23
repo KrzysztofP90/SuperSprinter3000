@@ -8,37 +8,10 @@ function parseCookieToEdit(cookie) {
 }
 
 
-function editUserStory(id, title, story, criteria, value, estimation, status) {
-   const storyArray = csvDBhandler.readDataFromDataBaseFile();
-
-   const parametersMap = createParametersMapForEditedUserStory(id, title, story, criteria,
-       value, estimation, status);
-
-   const editedStory = new Story(parametersMap);
-   storyArray[id-1] = editedStory;
-   let newJsonDataBase = "";
-   for (let i = 0; i < storyArray.length; i++) {
-      newJsonDataBase += JSON.stringify(storyArray[i]);
-      if (i < storyArray.length - 1) {
-         newJsonDataBase += "$";
-      }
-   }  
-   saveNewJsonToDataBaseFile(newJsonDataBase);
-}
-
-
-function saveNewJsonToDataBaseFile(newJson) {
-   fs.writeFile('DataBase/db.txt', newJson, function (err) {
-      if (err) throw err;
-      console.log('Saved!');
-    });
-}
-
 
 /// prepare express
 const express = require('express');
 const app = express();
-
 
 /// import model
 const Story = require('./model/story');
@@ -46,6 +19,7 @@ const Story = require('./model/story');
 //import db handler
 
 const csvDBhandler = require('./DAO/csvDataBaseHandler');
+
 
 
 /// prepare cookie handling
@@ -125,7 +99,7 @@ app.post('/edited', function(req, res) {
    const cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
    const numberOfStoryToEdit = parseCookieToEdit(cookie);
    res.clearCookie("toEdit");
-   editUserStory(numberOfStoryToEdit, req.body.storyTitle, req.body.userStory, req.body.criteria, 
+   csvDBhandler.editUserStory(numberOfStoryToEdit, req.body.storyTitle, req.body.userStory, req.body.criteria, 
       req.body.value,req.body.estimation, req.body.status);
    res.render('edited');
 
