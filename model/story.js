@@ -10,5 +10,7 @@ constructor(parameters) {
     this.status = parameters.get("status");
  }
 
+ 
+
 }
 module.exports = Story;

@@ -1,57 +1,5 @@
 
 
-
-function readDataFromDataBaseFile() {
-   const jsonStringArray = fs.readFileSync('DataBase/db.txt').toString().split("$");
-   const objectsArray = [];
-   for (let i = 0; i < jsonStringArray.length; i++) {
-      objectsArray.push(JSON.parse(jsonStringArray[i]));
-   }
-   countOfUserStory = objectsArray.length;
-   return objectsArray;
-}
-
-
-
-function saveNewRecordToDataBaseFile(title,userStory,criteria,value,estimation) {
-   countOfUserStory ++;
-   const parametersMap = createParametersMapForNewUserStory(title,userStory,criteria,value,estimation);
-   const newStory = new Story(parametersMap);
-   const newStoryJson = "$" + JSON.stringify(newStory);
-   //const newStoryJson = `$${JSON.stringify(newStory)}`;
-   fs.appendFile('DataBase/db.txt', newStoryJson, function (err) {
-      if (err) throw err;
-      console.log('Saved!');
-    });
-}
-
-
-function createParametersMapForNewUserStory(title,userStory,criteria,value,estimation) {
-   const map = createParametersMapWithoutIdAndStatus(title,userStory,criteria,value,estimation);
-   map.set("id", countOfUserStory);
-   map.set("status", "planning");
-   return map;
-}
-
-
-function createParametersMapWithoutIdAndStatus(title,userStory,criteria,value,estimation) {
-   const map = new Map();
-   map.set("title", title);
-   map.set("story", userStory);
-   map.set("criteria", criteria);
-   map.set("value", value);
-   map.set("estimation", estimation);
-   return map;
-}
-
-function createParametersMapForEditedUserStory(id, title, story, criteria, value, estimation, status) {
-   const map = createParametersMapWithoutIdAndStatus(title, story, criteria, value, estimation);
-   map.set("id", id);
-   map.set("status", status);
-   return map;
-}
-
-
 function parseCookieToEdit(cookie) {
    let numberOfStoryToedit = cookie.split(':')[1];
    const length = numberOfStoryToedit.length;
@@ -61,7 +9,7 @@ function parseCookieToEdit(cookie) {
 
 
 function editUserStory(id, title, story, criteria, value, estimation, status) {
-   const storyArray = readDataFromDataBaseFile();
+   const storyArray = csvDBhandler.readDataFromDataBaseFile();
 
    const parametersMap = createParametersMapForEditedUserStory(id, title, story, criteria,
        value, estimation, status);
@@ -94,6 +42,10 @@ const app = express();
 
 /// import model
 const Story = require('./model/story');
+
+//import db handler
+
+const csvDBhandler = require('./DAO/csvDataBaseHandler');
 
 
 /// prepare cookie handling
@@ -133,7 +85,7 @@ app.get('/', function (req, res) {
    if (cookie == '{}') {
       console.log('Cookies: ', req.cookies);
      
-      const arrayOfRecordsToTable = readDataFromDataBaseFile();
+      const arrayOfRecordsToTable = csvDBhandler.readDataFromDataBaseFile();
       res.render('index', {arrayOfRecordsToTable});
    }
    else {
@@ -151,7 +103,7 @@ app.get('/add', function(req, res) {
 
 
 app.post('/added', function(req, res) {
-   saveNewRecordToDataBaseFile(req.body.storyTitle, req.body.userStory, req.body.criteria, 
+   csvDBhandler.saveNewRecordToDataBaseFile(req.body.storyTitle, req.body.userStory, req.body.criteria, 
       req.body.value,req.body.estimation, req.body.status);
    res.render('added');
 })
@@ -162,7 +114,7 @@ app.post('/added', function(req, res) {
 app.get('/edit', function(req, res) {
    const cookie = JSON.stringify(cookieParser.JSONCookies(req.cookies));
    const numberOfStoryToEdit = parseCookieToEdit(cookie);
-   const storyArray = readDataFromDataBaseFile();
+   const storyArray = csvDBhandler.readDataFromDataBaseFile();
    editingStoryObject = storyArray[numberOfStoryToEdit-1];
 
    res.render('edit', {editingStoryObject});
